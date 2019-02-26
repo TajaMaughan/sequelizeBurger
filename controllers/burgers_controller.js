@@ -1,12 +1,12 @@
 //set up express server
 var express = require("express");
 var router = express.Router();
-//get burger functions for use with handlebars
-var burger = require("../models/burger.js");
+//get db functions for use with handlebars
+var db = require("../models");
 
-//sets homepage and renders burger table
+//sets homepage and renders db table
 router.get("/", function(req, res){
-    burger.selectAll(function(data) {
+    db.Burger.findAll({}).then(function(data) {
         var hbsObject = {
             burgers: data
         };
@@ -14,16 +14,24 @@ router.get("/", function(req, res){
     });
 })
 
-//posts new burger
+//posts new db
 router.post("/burger/create", function(req, res) {
-    burger.insertOne([req.body.burger_name], function(result){
+    db.Burger.create({
+        burger_name: req.body.burger_name
+    }).then(function(result){
         res.redirect("/");
     })
 })
 
-//devours selected burger
-router.post("/burger/eat/:id", function(req, res) {
-    burger.updateOne([req.params.id], function(result) {
+//devours selected db
+router.put("/burger/eat/:id", function(req, res) {
+    db.Burger.update({
+        devoured: true
+    }, {
+        where: {
+            id: req.body.id
+        }
+    }).then(function(result) {
         res.redirect("/");
     })
 })

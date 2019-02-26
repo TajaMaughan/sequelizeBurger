@@ -13,7 +13,7 @@
             <ul>
                 {{#each burgers}}
                 {{#unless devoured}}
-                <form action="/burger/eat/{{id}}" method="POST">
+                <form action="/burger/eat/{{id}}" method="UPDATE">
                     <div>
                         <li class="m-2">{{burger_name}}<button class="ml-2 btn btn-outline-success" type="submit">Devour
                                 It!</button></li>

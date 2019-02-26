@@ -3,7 +3,7 @@ var express = require("express");
 var PORT = process.env.PORT || 8000;
 
 var app = express();
-
+var db = require("./models");
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static(__dirname + "/public"));
 
@@ -23,7 +23,8 @@ var router = require("./controllers/burgers_controller.js");
 app.use(router);
 
 // Start our server so that it can begin listening to client requests.
-app.listen(PORT, function() {
-  // Log (server-side) when our server has started
-  console.log("Server listening on: http://localhost:" + PORT);
+db.sequelize.sync().then(function() {
+  app.listen(PORT, function() {
+    console.log("App listening on PORT " + PORT);
+  });
 });
